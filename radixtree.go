@@ -21,29 +21,29 @@ func newRadixTreeNode(key string, value interface{}) *radixTreeNode {
 
 func (tn *radixTreeNode) put(key string, value interface{}) (isNewKey bool) {
 	isNewKey = false
-	if len(key) == 0 {
+	if len(key) == 0 { // store the value in this node
 		isNewKey = tn.value == nil
 		tn.value = value
 		return
 	}
 	next := key[0]
-	if link, ok := tn.linksByFirstChar[next]; ok {
+	if link, ok := tn.linksByFirstChar[next]; ok { // if first char is in linksByFirstChar
 		commonPrefix := longestCommonPrefix(key, link)
-		if link == commonPrefix {
+		if link == commonPrefix { // is current link the common prefix
 			isNewKey = tn.links[link].put(key[len(commonPrefix):], value)
 		} else {
 			isNewKey = true
-			bridgeNode := tn.links[link].createBridge(link[len(commonPrefix):])
-			delete(tn.links, link)
-			tn.links[commonPrefix] = bridgeNode
-			tn.linksByFirstChar[next] = commonPrefix
-			bridgeNode.put(key[len(commonPrefix):], value)
+			bridgeNode := tn.links[link].createBridge(link[len(commonPrefix):]) //create a bridge node after common
+			delete(tn.links, link)                                              //remove old link
+			tn.links[commonPrefix] = bridgeNode                                 //Set bridge to be common prefix
+			tn.linksByFirstChar[next] = commonPrefix                            //Set linksByFirstChar as common prefix
+			bridgeNode.put(key[len(commonPrefix):], value)                      // put different component after bridge node
 		}
 		if isNewKey {
 			tn.size++
 		}
 	} else {
-		tn.size++
+		tn.size++ // Save the link with node
 		tn.linksByFirstChar[next] = key[1:]
 		tn.links[key[1:]] = newRadixTreeNode("", value)
 		isNewKey = true
