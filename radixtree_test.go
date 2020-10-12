@@ -32,6 +32,15 @@ func TestRadixTreeNodePut(t *testing.T) {
 		items map[string]interface{}
 	}{
 		{map[string]interface{}{"abc": 1}},
+		{map[string]interface{}{
+			"abc": 1,
+			"ab":  2,
+		}},
+		{map[string]interface{}{
+			"abc":   1,
+			"abcde": 2,
+			"ab":    3,
+		}},
 	}
 	for _, tt := range tests {
 		testname := fmt.Sprintf("%v", tt.items)
