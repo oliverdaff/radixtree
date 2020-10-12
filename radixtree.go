@@ -65,6 +65,26 @@ func (tn *radixTreeNode) initBridgeLinks(key string, node *radixTreeNode) {
 	tn.links[key] = node
 }
 
+func (tn *radixTreeNode) get(key string) interface{} {
+	if node := tn.getNode(key); node != nil {
+		return node.value
+	}
+	return nil
+}
+
+func (tn *radixTreeNode) getNode(key string) *radixTreeNode {
+	if len(key) == 0 {
+		return tn
+	}
+	if link, ok := tn.linksByFirstChar[key[0]]; ok {
+		commonPrefix := longestCommonPrefix(key, link)
+		if commonPrefix == link {
+			return tn.links[link].getNode(key[len(link):])
+		}
+	}
+	return nil
+}
+
 func longestCommonPrefix(key string, link string) string {
 	i := 0
 	n := min(len(key), len(link))

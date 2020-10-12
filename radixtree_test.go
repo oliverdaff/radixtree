@@ -27,6 +27,31 @@ func TestNewRadixTreeNode(t *testing.T) {
 	}
 }
 
+func TestRadixTreeNodePut(t *testing.T) {
+	var tests = []struct {
+		items map[string]interface{}
+	}{
+		{map[string]interface{}{"abc": 1}},
+	}
+	for _, tt := range tests {
+		testname := fmt.Sprintf("%v", tt.items)
+		t.Run(testname, func(t *testing.T) {
+			node := newRadixTreeNode("", nil)
+			for k, v := range tt.items {
+				node.put(k, v)
+			}
+			for k, v := range tt.items {
+				actual := node.get(k)
+				if actual != v {
+					t.Errorf("Expected value %s for key %s, got %s",
+						v, k, actual)
+				}
+			}
+		})
+
+	}
+}
+
 func TestLongestCommonPrefix(t *testing.T) {
 	var tests = []struct {
 		first, second, prefix string
