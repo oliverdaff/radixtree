@@ -12,6 +12,7 @@ func TestLongestCommonPrefix(t *testing.T) {
 		{"abc", "ade", "a"},
 		{"xyz", "abc", ""},
 		{"", "abc", ""},
+		{"abc", "", ""},
 	}
 	for _, tt := range tests {
 		testname := fmt.Sprintf("%s:%s", tt.first, tt.second)
