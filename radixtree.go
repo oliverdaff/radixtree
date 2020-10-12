@@ -13,9 +13,8 @@ func newRadixTreeNode(key string, value interface{}) *radixTreeNode {
 	if len(key) == 0 {
 		return &radixTreeNode{0, value, links, linksByFirstChar}
 	}
-	subKey := key[1:]
-	linksByFirstChar[key[0]] = subKey
-	links[subKey] = newRadixTreeNode("", value)
+	linksByFirstChar[key[0]] = key
+	links[key] = newRadixTreeNode("", value)
 	return &radixTreeNode{1, nil, links, linksByFirstChar}
 }
 
@@ -44,8 +43,8 @@ func (tn *radixTreeNode) put(key string, value interface{}) (isNewKey bool) {
 		}
 	} else {
 		tn.size++ // Save the link with node
-		tn.linksByFirstChar[next] = key[1:]
-		tn.links[key[1:]] = newRadixTreeNode("", value)
+		tn.linksByFirstChar[next] = key
+		tn.links[key] = newRadixTreeNode("", value)
 		isNewKey = true
 	}
 
