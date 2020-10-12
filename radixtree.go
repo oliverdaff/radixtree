@@ -85,6 +85,25 @@ func (tn *radixTreeNode) getNode(key string) *radixTreeNode {
 	return nil
 }
 
+func (tn *radixTreeNode) getNodeForPrefix(s string, path []string) (*radixTreeNode, []string) {
+	if len(s) == 0 {
+		return tn, path
+	}
+	next := s[0]
+	if link, ok := tn.linksByFirstChar[next]; ok {
+		commonPrefix := longestCommonPrefix(s, link)
+		if commonPrefix == link {
+			path = append(path, link)
+			return tn.links[link].getNodeForPrefix(s[len(link):], path)
+		} else if len(commonPrefix) == len(s) {
+			path := append(path, link)
+			return tn.links[link], path
+		}
+
+	}
+	return nil, path
+}
+
 func longestCommonPrefix(key string, link string) string {
 	i := 0
 	n := min(len(key), len(link))

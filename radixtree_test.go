@@ -61,6 +61,39 @@ func TestRadixTreeNodePut(t *testing.T) {
 	}
 }
 
+func TestRadixTreeNodeGetNodeForPrefix(t *testing.T) {
+	var tests = []struct {
+		items        map[string]interface{}
+		searchKey    string
+		nodeExpected bool
+	}{
+		{map[string]interface{}{"abc": 1}, "ab", true},
+		{map[string]interface{}{
+			"abc": 1,
+			"ab":  2,
+		}, "cde", false},
+		{map[string]interface{}{
+			"abc":   1,
+			"abcde": 2,
+			"xyz":   2,
+		}, "abcd", true},
+	}
+	for _, tt := range tests {
+		testname := fmt.Sprintf("%v", tt.items)
+		t.Run(testname, func(t *testing.T) {
+			node := newRadixTreeNode("", nil)
+			for k, v := range tt.items {
+				node.put(k, v)
+			}
+			result, _ := node.getNodeForPrefix(tt.searchKey, make([]string, 0))
+			if (result != nil) != tt.nodeExpected {
+				t.Errorf("Expected %t got %v", tt.nodeExpected, result)
+			}
+		})
+
+	}
+}
+
 func TestLongestCommonPrefix(t *testing.T) {
 	var tests = []struct {
 		first, second, prefix string
