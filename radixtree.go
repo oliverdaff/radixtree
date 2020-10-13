@@ -104,6 +104,10 @@ func (tn *radixTreeNode) getNodeForPrefix(s string, path []string) (*radixTreeNo
 	return nil, path
 }
 
+func (tn *radixTreeNode) contains(key string) bool {
+	return tn.getNode(key) != nil
+}
+
 func longestCommonPrefix(key string, link string) string {
 	i := 0
 	n := min(len(key), len(link))

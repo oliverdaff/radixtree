@@ -113,3 +113,27 @@ func TestLongestCommonPrefix(t *testing.T) {
 		})
 	}
 }
+
+func TestContains(t *testing.T) {
+	var tests = []struct {
+		keyValues        map[string]interface{}
+		searchKey        string
+		expectedContains bool
+	}{
+		{map[string]interface{}{}, "abc", false},
+	}
+	for _, tt := range tests {
+		testname := fmt.Sprintf("%s", tt.keyValues)
+		t.Run(testname, func(t *testing.T) {
+			node := newRadixTreeNode("", nil)
+			for key, value := range tt.keyValues {
+				node.put(key, value)
+			}
+			if node.contains(tt.searchKey) != tt.expectedContains {
+				t.Errorf("Expected contains to return %t for key %s",
+					tt.expectedContains, tt.searchKey)
+			}
+		})
+
+	}
+}
