@@ -108,6 +108,36 @@ func (tn *radixTreeNode) contains(key string) bool {
 	return tn.getNode(key) != nil
 }
 
+func (tn *radixTreeNode) delete(key string) (bool, bool) {
+	deleted, empty := false, false
+	if len(key) == 0 {
+		deleted = tn.value != nil
+		if deleted {
+			tn.value = nil
+			if tn.size == 0 {
+				empty = true
+			}
+		}
+	} else {
+		next := key[0]
+		if link, ok := tn.linksByFirstChar[next]; ok {
+			commonPrefix := longestCommonPrefix(key, link)
+			if link == commonPrefix {
+				deleted, empty = tn.links[link].delete(key[len(commonPrefix):])
+				if deleted {
+					tn.size--
+				}
+				if empty {
+					delete(tn.links, link)
+					delete(tn.linksByFirstChar, next)
+					empty = tn.size == 0 && tn.value == nil
+				}
+			}
+		}
+	}
+	return deleted, empty
+}
+
 func longestCommonPrefix(key string, link string) string {
 	i := 0
 	n := min(len(key), len(link))

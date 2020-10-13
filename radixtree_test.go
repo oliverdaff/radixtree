@@ -148,3 +148,44 @@ func TestContains(t *testing.T) {
 
 	}
 }
+
+func TestDelete(t *testing.T) {
+	var tests = []struct {
+		keyValues      map[string]interface{}
+		deleteKey      string
+		expectedDelete bool
+		expectedSize   int
+	}{
+		//{map[string]interface{}{}, "abc", false, 0},
+		{map[string]interface{}{
+			"abc": 1,
+		}, "abc", true, 0},
+		{map[string]interface{}{
+			"abcd": 1,
+		}, "abc", false, 1},
+		{map[string]interface{}{
+			"abcd":         1,
+			"abcde":        1,
+			"www.test.com": 1,
+		}, "abc", false, 3},
+	}
+	for _, tt := range tests {
+		testname := fmt.Sprintf("%s", tt.keyValues)
+		t.Run(testname, func(t *testing.T) {
+			node := newRadixTreeNode("", nil)
+			for key, value := range tt.keyValues {
+				node.put(key, value)
+			}
+			deleted, _ := node.delete(tt.deleteKey)
+			if deleted != tt.expectedDelete {
+				t.Errorf("Expected delete to return %t for key %s",
+					tt.expectedDelete, tt.deleteKey)
+			}
+			if node.size != tt.expectedSize {
+				t.Errorf("Got %d expected size to be %d for key %s", node.size,
+					tt.expectedSize, tt.deleteKey)
+			}
+		})
+
+	}
+}
