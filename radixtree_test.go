@@ -121,6 +121,12 @@ func TestContains(t *testing.T) {
 		expectedContains bool
 	}{
 		{map[string]interface{}{}, "abc", false},
+		{map[string]interface{}{
+			"abc": 1,
+		}, "abc", true},
+		{map[string]interface{}{
+			"abcd": 1,
+		}, "abc", false},
 	}
 	for _, tt := range tests {
 		testname := fmt.Sprintf("%s", tt.keyValues)
