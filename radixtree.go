@@ -1,5 +1,10 @@
 package radixtree
 
+import (
+	"sort"
+	"strings"
+)
+
 type radixTreeNode struct {
 	size             int
 	value            interface{}
@@ -158,7 +163,36 @@ func (tn *radixTreeNode) longestPrefixOf(s string, index int) *string {
 		}
 	}
 	return result
+}
 
+// KeyValue is a key value pair
+// from the RadixTree.
+type KeyValue struct {
+	key   string
+	value interface{}
+}
+
+func (tn *radixTreeNode) items(path []string) <-chan KeyValue {
+	ch := make(chan KeyValue)
+	go func() {
+		if tn.value != nil {
+			ch <- KeyValue{strings.Join(path, ""), tn.value}
+		}
+		keys := make([]string, 0)
+		for key := range tn.links {
+			keys = append(keys, key)
+		}
+		sort.Strings(keys)
+		for _, key := range keys {
+			path = append(path, key)
+			for item := range tn.links[key].items(path) {
+				ch <- item
+			}
+			path = path[:len(path)-1]
+		}
+		close(ch)
+	}()
+	return ch
 }
 
 func longestCommonPrefix(key string, link string) string {

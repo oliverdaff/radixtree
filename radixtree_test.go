@@ -221,6 +221,42 @@ func TestLongestPrefix(t *testing.T) {
 					tt.prefix, *prefix)
 			}
 		})
+	}
+}
 
+func TestItems(t *testing.T) {
+	var tests = []struct {
+		keyValues map[string]interface{}
+	}{
+		//{map[string]interface{}{}, "abc", false, 0},
+		{map[string]interface{}{
+			"abc": 1,
+		}},
+		{map[string]interface{}{
+			"abcd": 1,
+		}},
+		{map[string]interface{}{
+			"abcd":         1,
+			"abcde":        1,
+			"www.test.com": 1,
+		}},
+	}
+	for _, tt := range tests {
+		testname := fmt.Sprintf("%s", tt.keyValues)
+		t.Run(testname, func(t *testing.T) {
+			node := newRadixTreeNode("", nil)
+			for key, value := range tt.keyValues {
+				node.put(key, value)
+			}
+
+			keyValues := make([]KeyValue, 0)
+			for keyValue := range node.items(make([]string, 0)) {
+				keyValues = append(keyValues, keyValue)
+			}
+
+			if len(keyValues) != len(tt.keyValues) {
+				t.Errorf("Expected %d key values got %d", len(tt.keyValues), len(keyValues))
+			}
+		})
 	}
 }
