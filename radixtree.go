@@ -138,6 +138,29 @@ func (tn *radixTreeNode) delete(key string) (bool, bool) {
 	return deleted, empty
 }
 
+func (tn *radixTreeNode) longestPrefixOf(s string, index int) *string {
+	var result *string
+	if index == len(s) {
+		if tn.value != nil {
+			result = &s
+		}
+	} else {
+		next := s[index]
+		if link, ok := tn.linksByFirstChar[next]; ok {
+			commonPrefix := longestCommonPrefix(s[index:], link)
+			if commonPrefix == link {
+				result = tn.links[link].longestPrefixOf(s, index+len(link))
+			}
+		}
+		if result == nil && tn.value != nil {
+			subS := s[:index]
+			result = &subS
+		}
+	}
+	return result
+
+}
+
 func longestCommonPrefix(key string, link string) string {
 	i := 0
 	n := min(len(key), len(link))

@@ -189,3 +189,38 @@ func TestDelete(t *testing.T) {
 
 	}
 }
+
+func TestLongestPrefix(t *testing.T) {
+	var tests = []struct {
+		keyValues         map[string]interface{}
+		searchKey, prefix string
+	}{
+		//{map[string]interface{}{}, "abc", false, 0},
+		{map[string]interface{}{
+			"abc": 1,
+		}, "abc", "abc"},
+		{map[string]interface{}{
+			"abcd": 1,
+		}, "abcdef", "abcd"},
+		{map[string]interface{}{
+			"abcd":         1,
+			"abcde":        1,
+			"www.test.com": 1,
+		}, "www.test.com/index.html", "www.test.com"},
+	}
+	for _, tt := range tests {
+		testname := fmt.Sprintf("%s", tt.keyValues)
+		t.Run(testname, func(t *testing.T) {
+			node := newRadixTreeNode("", nil)
+			for key, value := range tt.keyValues {
+				node.put(key, value)
+			}
+			prefix := node.longestPrefixOf(tt.searchKey, 0)
+			if *prefix != tt.prefix {
+				t.Errorf("Expected prefix to return %s for key %s",
+					tt.prefix, *prefix)
+			}
+		})
+
+	}
+}
