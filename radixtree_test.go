@@ -127,6 +127,11 @@ func TestContains(t *testing.T) {
 		{map[string]interface{}{
 			"abcd": 1,
 		}, "abc", false},
+		{map[string]interface{}{
+			"abcd":         1,
+			"abcde":        1,
+			"www.test.com": 1,
+		}, "abc", false},
 	}
 	for _, tt := range tests {
 		testname := fmt.Sprintf("%s", tt.keyValues)
