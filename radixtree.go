@@ -195,6 +195,17 @@ func (tn *radixTreeNode) items(path []string) <-chan KeyValue {
 	return ch
 }
 
+func (tn *radixTreeNode) keys(path []string) <-chan string {
+	ch := make(chan string)
+	go func() {
+		for keyValue := range tn.items(path) {
+			ch <- keyValue.key
+		}
+		close(ch)
+	}()
+	return ch
+}
+
 func longestCommonPrefix(key string, link string) string {
 	i := 0
 	n := min(len(key), len(link))
