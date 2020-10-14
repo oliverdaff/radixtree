@@ -92,6 +92,18 @@ func (rt *RadixTree) KeysWithPrefix(s string) <-chan string {
 	return ch
 }
 
+// Keys returns a channel that receives all keys
+// in the trie.
+func (rt *RadixTree) Keys() <-chan string {
+	return rt.root.keys(make([]string, 0))
+}
+
+// Items returns a channel that receives all
+// key value pairs in the trie.
+func (rt *RadixTree) Items() <-chan KeyValue {
+	return rt.root.items(make([]string, 0))
+}
+
 type radixTreeNode struct {
 	size             int
 	value            interface{}
