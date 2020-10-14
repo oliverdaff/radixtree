@@ -64,6 +64,20 @@ func (rt *RadixTree) IsEmpty() bool {
 	return rt.root.size == 0
 }
 
+// LongestPrefixOf returns the longest prefix of the key
+// found in the trie.
+// A empty string is returned no common prefix is found.
+// A error is returned if the passed key has zero length.
+func (rt *RadixTree) LongestPrefixOf(key string) (string, error) {
+	if len(key) == 0 {
+		return "", errors.New("Zero length key")
+	}
+	if prefix := rt.root.longestPrefixOf(key, 0); prefix != nil {
+		return *prefix, nil
+	}
+	return "", nil
+}
+
 type radixTreeNode struct {
 	size             int
 	value            interface{}

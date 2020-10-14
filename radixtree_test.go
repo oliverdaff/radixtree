@@ -172,6 +172,38 @@ func TestRadixTreeIsEmpty(t *testing.T) {
 	}
 }
 
+func TestRadixTreeLongestPrefixOf(t *testing.T) {
+	var tests = []struct {
+		key            string
+		value          interface{}
+		searchKey      string
+		expextedPrefix string
+		errorExpected  bool
+	}{
+		{"abc", 1, "abcde", "abc", false},
+		{"abc", 1, "", "", true},
+		{"abc", 1, "wrong", "", false},
+	}
+	for _, tt := range tests {
+		testname := fmt.Sprintf("%s:%s", tt.key, tt.value)
+		t.Run(testname, func(t *testing.T) {
+			trie := NewRadixTree()
+			trie.Put(tt.key, tt.value)
+			prefix, error := trie.LongestPrefixOf(tt.searchKey)
+			errorResult := error != nil
+			if errorResult != tt.errorExpected {
+				t.Errorf("Error expected %t but got %t",
+					tt.errorExpected, errorResult)
+			}
+			if prefix != tt.expextedPrefix {
+				t.Errorf("Expected %s got %s",
+					tt.expextedPrefix, prefix)
+			}
+		})
+
+	}
+}
+
 func TestRadixTreeNodePut(t *testing.T) {
 	var tests = []struct {
 		items map[string]interface{}
