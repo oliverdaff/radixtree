@@ -61,6 +61,38 @@ func TestRadixTreeGet(t *testing.T) {
 	}
 }
 
+func TestRadixTreeDelete(t *testing.T) {
+	var tests = []struct {
+		key           string
+		value         interface{}
+		deleteKey     string
+		foundExpected bool
+		errorExpected bool
+	}{
+		{"abc", 1, "abc", true, false},
+		{"abc", 1, "", false, true},
+		{"abc", 1, "wrong", false, false},
+	}
+	for _, tt := range tests {
+		testname := fmt.Sprintf("%s:%s", tt.key, tt.value)
+		t.Run(testname, func(t *testing.T) {
+			trie := NewRadixTree()
+			trie.Put(tt.key, tt.value)
+			deleted, error := trie.Delete(tt.deleteKey)
+			errorResult := error != nil
+			if errorResult != tt.errorExpected {
+				t.Errorf("Error expected %t but got %t",
+					tt.errorExpected, errorResult)
+			}
+			if deleted != tt.foundExpected {
+				t.Errorf("Expected %v got %v",
+					tt.foundExpected, deleted)
+			}
+		})
+
+	}
+}
+
 func TestNewRadixTreeNode(t *testing.T) {
 	var tests = []struct {
 		key   string
