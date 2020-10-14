@@ -1,3 +1,5 @@
+// Package radixtree a data structure that represents a space-optimized trie
+// (prefix tree) in which each node that is the only child is merged with its parent.
 package radixtree
 
 import (
