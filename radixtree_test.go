@@ -28,6 +28,39 @@ func TestRadixTreePut(t *testing.T) {
 
 	}
 }
+
+func TestRadixTreeGet(t *testing.T) {
+	var tests = []struct {
+		key           string
+		value         interface{}
+		queryKey      string
+		queryValue    interface{}
+		errorExpected bool
+	}{
+		{"abc", 1, "abc", 1, false},
+		{"abc", 1, "", nil, true},
+		{"abc", 1, "wrong", nil, false},
+	}
+	for _, tt := range tests {
+		testname := fmt.Sprintf("%s:%s", tt.key, tt.value)
+		t.Run(testname, func(t *testing.T) {
+			trie := NewRadixTree()
+			trie.Put(tt.key, tt.value)
+			val, result := trie.Get(tt.queryKey)
+			errorResult := result != nil
+			if errorResult != tt.errorExpected {
+				t.Errorf("Error expected %t but got %t",
+					tt.errorExpected, errorResult)
+			}
+			if val != tt.queryValue {
+				t.Errorf("Expected %v got %v",
+					tt.queryValue, val)
+			}
+		})
+
+	}
+}
+
 func TestNewRadixTreeNode(t *testing.T) {
 	var tests = []struct {
 		key   string
