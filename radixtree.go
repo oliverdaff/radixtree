@@ -78,6 +78,20 @@ func (rt *RadixTree) LongestPrefixOf(key string) (string, error) {
 	return "", nil
 }
 
+// KeysWithPrefix searches the tree for all the
+// keys for which s is a valid prefix.
+// Returns a channel that returns all the keys
+func (rt *RadixTree) KeysWithPrefix(s string) <-chan string {
+
+	prefixNode, path := rt.root.getNodeForPrefix(s, make([]string, 0))
+	if prefixNode != nil {
+		return prefixNode.keys(path)
+	}
+	ch := make(chan string)
+	close(ch)
+	return ch
+}
+
 type radixTreeNode struct {
 	size             int
 	value            interface{}
@@ -246,7 +260,7 @@ type KeyValue struct {
 }
 
 func (tn *radixTreeNode) items(path []string) <-chan KeyValue {
-	ch := make(chan KeyValue)
+	ch := make(chan KeyValue, 1)
 	go func() {
 		if tn.value != nil {
 			ch <- KeyValue{strings.Join(path, ""), tn.value}
@@ -269,7 +283,7 @@ func (tn *radixTreeNode) items(path []string) <-chan KeyValue {
 }
 
 func (tn *radixTreeNode) keys(path []string) <-chan string {
-	ch := make(chan string)
+	ch := make(chan string, 1)
 	go func() {
 		for keyValue := range tn.items(path) {
 			ch <- keyValue.key
