@@ -7,6 +7,16 @@ import (
 	"strings"
 )
 
+// RadixTree is a external API for the trie.
+type RadixTree struct {
+	root *radixTreeNode
+}
+
+// NewRadixTree creates a new RadixTree
+func NewRadixTree() *RadixTree {
+	return &RadixTree{newRadixTreeNode("", nil)}
+}
+
 type radixTreeNode struct {
 	size             int
 	value            interface{}
