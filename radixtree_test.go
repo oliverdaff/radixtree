@@ -147,6 +147,31 @@ func TestRadixTreeContains(t *testing.T) {
 	}
 }
 
+func TestRadixTreeIsEmpty(t *testing.T) {
+	var tests = []struct {
+		key   string
+		value interface{}
+	}{
+		{"abc", 1},
+		{"testing", 1},
+		{"second_key", 1},
+	}
+	for _, tt := range tests {
+		testname := fmt.Sprintf("%s:%s", tt.key, tt.value)
+		t.Run(testname, func(t *testing.T) {
+			trie := NewRadixTree()
+			if !trie.IsEmpty() {
+				t.Errorf("Expected empty tire.")
+			}
+			trie.Put(tt.key, tt.value)
+			if trie.IsEmpty() {
+				t.Errorf("Expected non empty tire.")
+			}
+		})
+
+	}
+}
+
 func TestRadixTreeNodePut(t *testing.T) {
 	var tests = []struct {
 		items map[string]interface{}

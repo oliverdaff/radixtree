@@ -59,6 +59,11 @@ func (rt *RadixTree) Contains(key string) (bool, error) {
 	return rt.root.contains(key), nil
 }
 
+// IsEmpty returns true if the trie is empty.
+func (rt *RadixTree) IsEmpty() bool {
+	return rt.root.size == 0
+}
+
 type radixTreeNode struct {
 	size             int
 	value            interface{}
