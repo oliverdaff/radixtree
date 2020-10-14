@@ -38,6 +38,17 @@ func (rt *RadixTree) Get(key string) (interface{}, error) {
 	return rt.root.get(key), nil
 }
 
+// Delete removes the key and value from the tree
+// returns true if the key was found else returns false.
+// A error is returned if the key has zero length.
+func (rt *RadixTree) Delete(key string) (bool, error) {
+	if len(key) == 0 {
+		return false, errors.New("Zero length key")
+	}
+	deleted, _ := rt.root.delete(key)
+	return deleted, nil
+}
+
 type radixTreeNode struct {
 	size             int
 	value            interface{}
