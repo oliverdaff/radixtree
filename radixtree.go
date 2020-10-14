@@ -49,6 +49,16 @@ func (rt *RadixTree) Delete(key string) (bool, error) {
 	return deleted, nil
 }
 
+// Contains returns true if the trie contains the key
+// else returns false.
+// A error is returned if the key has zero length.
+func (rt *RadixTree) Contains(key string) (bool, error) {
+	if len(key) == 0 {
+		return false, errors.New("Zero length key")
+	}
+	return rt.root.contains(key), nil
+}
+
 type radixTreeNode struct {
 	size             int
 	value            interface{}
