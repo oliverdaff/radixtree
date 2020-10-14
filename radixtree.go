@@ -3,6 +3,7 @@
 package radixtree
 
 import (
+	"errors"
 	"sort"
 	"strings"
 )
@@ -15,6 +16,26 @@ type RadixTree struct {
 // NewRadixTree creates a new RadixTree
 func NewRadixTree() *RadixTree {
 	return &RadixTree{newRadixTreeNode("", nil)}
+}
+
+// Put stores a key value in the trie.
+// Returns a error if the key has zero length.
+func (rt *RadixTree) Put(key string, value interface{}) error {
+	if len(key) == 0 {
+		return errors.New("Zero length key")
+	}
+	rt.root.put(key, value)
+	return nil
+}
+
+// Get returns the value associated with the key
+// else returns nil.
+// Get returns an error if the key passed has zero length.
+func (rt *RadixTree) Get(key string) (interface{}, error) {
+	if len(key) == 0 {
+		return nil, errors.New("Zero length key")
+	}
+	return rt.root.get(key), nil
 }
 
 type radixTreeNode struct {
