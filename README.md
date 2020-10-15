@@ -15,7 +15,14 @@ Create a new RadixTree
 trie = trie.NewRadixTree()
 ```
 
+__Put key value__
 
+Put key value into the trie
+
+```go
+trie = trie.NewRadixTree()
+trie.Put("abc", 1)
+```
 
 
 
