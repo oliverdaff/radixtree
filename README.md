@@ -55,6 +55,17 @@ trie.Put("abc", 1)
 deleted, _ = trie.Contains("abc")
 ```
 
+__Longest Prefix__
+
+Find the key with longest prefix in the trie for the query string.
+
+```go
+trie = trie.NewRadixTree()
+trie.Put("abc", 1)
+key, _ = trie.LongestPrefixOf("abcdef")
+```
+
+
 
 
 
