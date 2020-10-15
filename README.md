@@ -1,5 +1,9 @@
 # radixtree
 
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/oliverdaff/radixtree)](https://pkg.go.dev/github.com/oliverdaff/radixtree) 
+[![Go Report Card](https://goreportcard.com/badge/github.com/oliverdaff/radixtree)](https://goreportcard.com/report/github.com/oliverdaff/radixtree) 
+[![CircleCI](https://circleci.com/gh/oliverdaff/radixtree.svg?style=shield)](https://circleci.com/gh/oliverdaff/radixtree
+
 A data structure that represents a space-optimized trie
 (prefix tree) in which each node that is the only child is merged with its parent.
 
