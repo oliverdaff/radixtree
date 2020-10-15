@@ -45,6 +45,16 @@ trie.Put("abc", 1)
 deleted, _ = trie.Delete("abc")
 ```
 
+__Check if key stored with value__
+
+Return true if key was found in the trie.
+
+```go
+trie = trie.NewRadixTree()
+trie.Put("abc", 1)
+deleted, _ = trie.Contains("abc")
+```
+
 
 
 
