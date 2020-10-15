@@ -24,6 +24,15 @@ trie = trie.NewRadixTree()
 trie.Put("abc", 1)
 ```
 
+__Get value__
+
+Retrieve the value stored in the trie for the key else else nil.
+
+```go
+trie = trie.NewRadixTree()
+trie.Put("abc", 1)
+result, _ = trie.Get("abc")
+```
 
 
 
