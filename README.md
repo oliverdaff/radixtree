@@ -65,7 +65,16 @@ trie.Put("abc", 1)
 key, _ = trie.LongestPrefixOf("abcdef")
 ```
 
+__Keys For Prefix__
 
+Return all the keys in the trie that starts with this prefix.
+
+```go
+trie = trie.NewRadixTree()
+trie.Put("www.test.com", 1)
+trie.Put("www.example.com", 1)
+key_channel = trie.KeyWithPrefix("www.")
+```
 
 
 
