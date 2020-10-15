@@ -34,6 +34,18 @@ trie.Put("abc", 1)
 result, _ = trie.Get("abc")
 ```
 
+__Delete value__
+
+Delete the value stored in the trie for the key, returns true
+if a key was found and the value was deleted else returns false.
+
+```go
+trie = trie.NewRadixTree()
+trie.Put("abc", 1)
+deleted, _ = trie.Delete("abc")
+```
+
+
 
 
 
