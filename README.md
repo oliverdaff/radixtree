@@ -76,6 +76,27 @@ trie.Put("www.example.com", 1)
 key_channel = trie.KeyWithPrefix("www.")
 ```
 
+__All Keys__
+
+Return all the keys in the trie.
+
+```go
+trie = trie.NewRadixTree()
+trie.Put("www.test.com", 1)
+trie.Put("www.example.com", 1)
+key_channel = trie.Keys()
+```
+
+
+__All Key Value Pairs__
+
+Return all the key value pairs.
+```go
+trie = trie.NewRadixTree()
+trie.Put("www.test.com", 1)
+trie.Put("www.example.com", 1)
+key_channel = trie.Items()
+```
 
 
 
