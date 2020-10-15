@@ -267,8 +267,8 @@ func (tn *radixTreeNode) longestPrefixOf(s string, index int) *string {
 // KeyValue is a key value pair
 // from the RadixTree.
 type KeyValue struct {
-	key   string
-	value interface{}
+	Key   string
+	Value interface{}
 }
 
 func (tn *radixTreeNode) items(path []string) <-chan KeyValue {
@@ -298,7 +298,7 @@ func (tn *radixTreeNode) keys(path []string) <-chan string {
 	ch := make(chan string, 1)
 	go func() {
 		for keyValue := range tn.items(path) {
-			ch <- keyValue.key
+			ch <- keyValue.Key
 		}
 		close(ch)
 	}()
